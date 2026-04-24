@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layout/head') %>
+<body>
+
+<%- include('layout/navbar') %>
+    <main>
+        <div class="flexbox">
+        <button class="primary-btn" id="openModal"> <a href="#">Add new route</a></button>
+        </div>
+        <div class="routes-grid">
+  <% if (routeList) { %>
+  <% routeList.forEach(route => { %>
+    <div class="route-card">
+      <div class="route-info">
+        <h3><%= route.origin %> to <%= route.destination %></h3>
+        <p class="price"><%= route.price_birr %> ETB</p>
+        <small>ID: <%= route.id %></small>
+      </div>
+
+      <div class="card-actions">
+        <form action="/delete/route/<%= route.id %>?_method=DELETE" method="GET">
+          <button type="submit" class="btn-delete" onclick="return confirm('Delete this route?')">
+            Delete
+          </button>
+        </form>
+      </div>
+    </div>
+  <% }) %>
+   <% } else { %>
+    <h3 style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);"> Saved routes will be here</h3>
+    <% } %>
+</div>
+<div id="modalContainer" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2>Add New Route</h2>
+            <button id="closeModal" class="close-x">&times;</button>
+        </div>
+        
+        <form action="/routes/add" method="POST">
+            <input type="text" name="origin" placeholder="Origin" required>
+            <input type="text" name="destination" placeholder="Destination" required>
+            <input type="number" name="price_birr" placeholder="Price in Birr" step="0.01" required>
+            <button type="submit" class="btn-save">Save Route</button>
+        </form>
+    </div>
+</div>
+    </main>
+<script src="/dashboard.js"></script>
+</body>
+</html>
